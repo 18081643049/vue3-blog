@@ -1,9 +1,10 @@
 <template>
-  <n-tabs v-model="tabValue" justify-content="start" type="line">
+  <n-tabs v-model:value="tabValue" justify-content="start" type="line">
     <n-tab-pane name="list" tab="文章列表">
-      <div v-for="(blog, index) in blogListInfo" style="margin-bottom: 15px" :key="index">
+      <div v-for="(blog, index) in blogListInfo" style="margin-bottom: 15px">
         <n-card :title="blog.title">
           {{ blog.content }}
+
           <template #footer>
             <n-space align="center">
               <div>发布时间：{{ blog.create_time }}</div>
@@ -15,11 +16,7 @@
       </div>
 
       <n-space>
-        <div
-          @click="toPage(pageNum)"
-          v-for="pageNum in pageInfo.pageCount"
-          :key="pageNum"
-        >
+        <div @click="toPage(pageNum)" v-for="pageNum in pageInfo.pageCount">
           <div :style="'color:' + (pageNum == pageInfo.page ? 'blue' : '')">
             {{ pageNum }}
           </div>
@@ -29,10 +26,10 @@
     <n-tab-pane name="add" tab="添加文章">
       <n-form>
         <n-form-item label="标题">
-          <n-input v-model="addArticle.title" placeholder="请输入标题" />
+          <n-input v-model:value="addArticle.title" placeholder="请输入标题" />
         </n-form-item>
         <n-form-item label="分类">
-          <n-select v-model="addArticle.categoryId" :options="categortyOptions" />
+          <n-select v-model:value="addArticle.categoryId" :options="categortyOptions" />
         </n-form-item>
         <n-form-item label="内容">
           <rich-text-editor v-model="addArticle.content"></rich-text-editor>
@@ -45,10 +42,13 @@
     <n-tab-pane name="update" tab="修改">
       <n-form>
         <n-form-item label="标题">
-          <n-input v-model="updateArticle.title" placeholder="请输入标题" />
+          <n-input v-model:value="updateArticle.title" placeholder="请输入标题" />
         </n-form-item>
         <n-form-item label="分类">
-          <n-select v-model="updateArticle.categoryId" :options="categortyOptions" />
+          <n-select
+            v-model:value="updateArticle.categoryId"
+            :options="categortyOptions"
+          />
         </n-form-item>
         <n-form-item label="内容">
           <rich-text-editor v-model="updateArticle.content"></rich-text-editor>
@@ -63,7 +63,7 @@
 
 <script setup>
 import { AdminStore } from "../../stores/AdminStore";
-import { ref, reactive, inject, onMounted } from "vue";
+import { ref, reactive, inject, onMounted, nextTick } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import RichTextEditor from "../../components/RichTextEditor.vue";
 const router = useRouter();
@@ -159,7 +159,7 @@ const toUpdate = async (blog) => {
   let res = await axios.get("/blog/detail?id=" + blog.id);
   updateArticle.id = blog.id;
   updateArticle.title = res.data.rows[0].title;
-  updateArticle.content = res.data.rows[0].content;
+	updateArticle.content = res.data.rows[0].content;
   updateArticle.categoryId = res.data.rows[0].category_id;
 };
 

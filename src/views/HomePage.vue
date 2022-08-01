@@ -1,25 +1,31 @@
 <template>
   <div class="container">
     <div class="nav">
-      <div @click="homePage">首页</div>
-      <div>
-        <n-popselect
-          @update:value="searchByCategory"
-          v-model="selectedCategory"
-          :options="categortyOptions"
-          trigger="click"
-        >
-          <div>
-            分类<span>{{ categoryName }}</span>
-          </div>
-        </n-popselect>
-      </div>
-      <div @click="dashboard">后台</div>
+			<div class="nav-wrapper">
+				<div @click="homePage">首页</div>
+				<div>
+					<n-popselect
+						@update:value="searchByCategory"
+						v-model:value="selectedCategory"
+						:options="categortyOptions"
+						trigger="click"
+					>
+						<div>
+							分类
+						</div>
+					</n-popselect>
+				</div>
+			</div>
+      <el-button class="backstege" @click="dashboard">进入后台 <el-icon><ArrowRightBold /></el-icon></el-button>
     </div>
     <n-divider />
+		<el-breadcrumb :separator-icon="ArrowRight" style="margin-bottom: 20px">
+			<el-breadcrumb-item :to="{ path: '/' }">{{ 'Home' }}</el-breadcrumb-item>
+			<el-breadcrumb-item :to="{ path: '/' }">{{ categoryName }}</el-breadcrumb-item>
+		</el-breadcrumb>
     <n-space class="search">
       <n-input
-        v-model="pageInfo.keyword"
+        v-model:value="pageInfo.keyword"
         :style="{ width: '500px' }"
         placeholder="请输入关键字"
       />
@@ -28,8 +34,8 @@
 
     <div
       v-for="(blog, index) in blogListInfo"
+			:key="index"
       style="margin-bottom: 15px; cursor: pointer"
-      :key="index"
     >
       <n-card :title="blog.title" @click="toDetail(blog)">
         {{ blog.content }}
@@ -44,7 +50,7 @@
 
     <n-pagination
       @update:page="loadBlogs"
-      v-model="pageInfo.page"
+      v-model:page="pageInfo.page"
       :page-count="pageInfo.pageCount"
     />
 
@@ -176,19 +182,28 @@ const dashboard = () => {
   font-size: 20px;
   padding-top: 20px;
   color: #64676a;
+	display: flex;
+	justify-content: space-between;
+	.nav-wrapper {
+		display: flex;
+		align-items: center;
+		div {
+			cursor: pointer;
+			margin-right: 15px;
 
-  div {
-    cursor: pointer;
-    margin-right: 15px;
+			&:hover {
+				color: #f60;
+			}
 
-    &:hover {
-      color: #f60;
-    }
+			span {
+				font-size: 12px;
+			}
+		}
+	}
+	.backstege {
 
-    span {
-      font-size: 12px;
-    }
-  }
+	}
+
 }
 
 .footer {

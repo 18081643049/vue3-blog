@@ -5,10 +5,10 @@
         {{ menu.name }}
       </div>
     </div>
-    <div style="padding: 20px; width: 100%">
+    <div class="router-wrapper" style="padding: 20px; width: 100%">
+			<CommonHeader />
       <router-view></router-view>
     </div>
-    <div class="title">后台管理系统</div>
   </div>
 </template>
 
@@ -16,6 +16,7 @@
 import { AdminStore } from "../../stores/AdminStore";
 import { ref, reactive, inject } from "vue";
 import { useRouter, useRoute } from "vue-router";
+import CommonHeader from "../../components/CommonHeader.vue"
 const router = useRouter();
 const route = useRoute();
 
@@ -28,7 +29,6 @@ const adminStore = AdminStore();
 let menus = [
   { name: "文章管理", href: "/dashboard/article" },
   { name: "分类管理", href: "/dashboard/category" },
-  { name: "退出", href: "logout" },
 ];
 
 //路由跳转

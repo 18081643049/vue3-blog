@@ -9,7 +9,10 @@ import { router } from './common/router'
 import { createPinia } from "pinia";
 import axios from 'axios'
 import { AdminStore } from './stores/AdminStore'
+import NProgress from 'nprogress'
 import "element-plus/dist/index.css"
+import './style.css'
+import 'nprogress/nprogress.css'
 
 // 服务端地址
 axios.defaults.baseURL = "http://120.46.184.130/"
@@ -37,8 +40,13 @@ app.use(ElementPlus);
 const adminStore = AdminStore()
 // axios拦截器
 axios.interceptors.request.use((config)=>{
+    NProgress.start()
     //每次请求都在headers中添加token
     config.headers.token = adminStore.token
+    return config
+})
+axios.interceptors.response.use(config => {
+    NProgress.done()
     return config
 })
 

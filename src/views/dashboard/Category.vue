@@ -1,6 +1,6 @@
 <template>
   <div>
-    <n-button @click="showAddModel = true">添加</n-button>
+    <n-button style="margin-bottom: 20px" @click="showAddModel = true">添加</n-button>
     <n-table :bordered="false" :single-line="false">
       <thead>
         <tr>
@@ -10,7 +10,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(category, index) in categoryList" :key="index">
+        <tr v-for="(category, index) in categoryList">
           <td>{{ category.id }}</td>
           <td>{{ category.name }}</td>
           <td>
@@ -23,12 +23,12 @@
       </tbody>
     </n-table>
 
-    <n-modal v-model="showAddModel" preset="dialog" title="Dialog">
+    <n-modal v-model:show="showAddModel" preset="dialog" title="Dialog">
       <template #header>
         <div>添加分类</div>
       </template>
       <div>
-        <n-input v-model="addCategory.name" type="text" placeholder="请输入名称" />
+        <n-input v-model:value="addCategory.name" type="text" placeholder="请输入名称" />
       </div>
       <template #action>
         <div>
@@ -37,12 +37,16 @@
       </template>
     </n-modal>
 
-    <n-modal v-model="showUpdateModel" preset="dialog" title="Dialog">
+    <n-modal v-model:show="showUpdateModel" preset="dialog" title="Dialog">
       <template #header>
         <div>修改分类</div>
       </template>
       <div>
-        <n-input v-model="updateCategory.name" type="text" placeholder="请输入名称" />
+        <n-input
+          v-model:value="updateCategory.name"
+          type="text"
+          placeholder="请输入名称"
+        />
       </div>
       <template #action>
         <div>
